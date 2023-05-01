@@ -7,7 +7,7 @@ db.jobs.distinct('Career Level')
 
 // 2.
 db.jobs.aggregate([
-    {$match:{}},
+    {$match:{'Posting Type':'External', 'Salary Frequency':'Hourly'}},
     {$project: {_id : 0, 'Agency':1, 'Business Title':1,'Salary Range To':1}}
     ,{$sort:{'Salary Range To':-1}}
     ,{$limit:3}
@@ -16,15 +16,15 @@ db.jobs.aggregate([
 
 
 // 3.
-db.jobs.aggregate([{$group:{_id:'$Agency', count:{$count:{}}}}])
+db.jobs.aggregate([{$match:{'Full-Time/Part-Time indicator':'F', 'Posting Type':'External'}},{$group:{_id:'$Agency', count:{$count:{}}}}])
 
 
 // 4.
-db.jobs.aggregate([{$group: {_id: '$Agency', count: {$sum: 1}}},{$match: {count: {$gt: 100}}}])
+db.jobs.aggregate([{$match:{'Full-Time/Part-Time indicator':'F', 'Posting Type':'External'}},{$group:{_id:'$Agency', count:{$count:{}}}},{$match: {count: {$gt: 100}}}])
 
 
 // 5.
-db.jobs.aggregate([
+db.jobs.aggregate([{$match: { 'Full-Time/Part-Time indicator': 'F', 'Posting Type': 'External' }},
     {$group: {_id: {agency: '$Agency'}, count: {$sum: 1}}},
     {$match: {count: {$gt: 100}}},
     {$project: {count: 1,agency: {$toLower: '$_id.agency'},  _id: 0}},
