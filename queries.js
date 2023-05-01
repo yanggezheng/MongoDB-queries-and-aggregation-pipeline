@@ -20,7 +20,7 @@ db.jobs.aggregate([{$match:{'Full-Time/Part-Time indicator':'F', 'Posting Type':
 
 
 // 4.
-db.jobs.aggregate([{$match:{'Full-Time/Part-Time indicator':'F', 'Posting Type':'External'}},{$group:{_id:'$Agency', count:{$count:{}}}},{$match: {count: {$gt: 100}}}])
+db.jobs.aggregate([{$match:{'Full-Time/Part-Time indicator':'F', 'Posting Type':'External'}},{$group:{_id:'$Agency', count:{$count:{}}}},{$match: {count: {$gt: 100}}},{$sort:{count:-1}}])
 
 
 // 5.
